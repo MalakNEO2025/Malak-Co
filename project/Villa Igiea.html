@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Villa Igiea — Guest App</title>
+<link rel="stylesheet" href="_ds/neolife-design-system-08f24531-a1ea-498f-a5a0-f3fd487ca714/styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/neolife-design-system-08f24531-a1ea-498f-a5a0-f3fd487ca714/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; background: #0c0a09; font-family: var(--font-ui); overflow: hidden; }
+  #root { height: 100vh; }
+  .stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(120% 100% at 50% 0%, #1a1614 0%, #0c0a09 70%); }
+  .device { width: 744px; height: 1040px; background: var(--bg-app); border-radius: 40px; overflow: hidden;
+    position: relative; box-shadow: 0 40px 120px rgba(0,0,0,.6), 0 0 0 1px rgba(245,242,238,.06);
+    transform-origin: center center; }
+  .scroll { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+  .scroll::-webkit-scrollbar { display: none; }
+  .navwrap { position: absolute; left: 0; right: 0; bottom: 24px; display: flex; justify-content: center; z-index: 20; pointer-events: none; }
+  .navwrap > * { pointer-events: auto; }
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%, -12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="screens-auth.jsx"></script>
+<script type="text/babel" src="screens-home.jsx"></script>
+<script type="text/babel" src="screens-dining.jsx"></script>
+<script type="text/babel" src="screens-spa.jsx"></script>
+<script type="text/babel" src="screens-room.jsx"></script>
+<script type="text/babel" src="screens-account.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+const I = window.VIcons;
+
+const FONTS = {
+  Georama: "'Georama', 'Inter', sans-serif",
+  'Bricolage Grotesque': "'Bricolage Grotesque', 'Inter', sans-serif",
+  Montserrat: "'Montserrat', 'Inter', sans-serif",
+};
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": [
+    "#B08D57",
+    "#7A5C2E"
+  ],
+  "displayFont": "Bricolage Grotesque",
+  "venueName": "Villa Igiea",
+  "venuePlace": "Palermo, Sicily"
+}/*EDITMODE-END*/;
+
+const ACCENTS = [
+  ["#C0392B", "#8B1A1A"],   // Sicilian maroon (default)
+  ["#3B969A", "#035256"],   // NEOLIFE teal
+  ["#B08D57", "#7A5C2E"],   // antique gold
+  ["#2F5D50", "#1C3B33"],   // deep emerald
+  ["#3E4C6B", "#222B40"],   // midnight blue
+];
+
+const STORE_KEY = 'villa-igiea-app-v1';
+const loadState = () => { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { return {}; } };
+
+const DEFAULT_ROOM = { dnd: false, wifi: true, scene: 'ambient', temp: 22, curtains: true, tv: false };
+const FOLIO = [
+  { label: 'Executive Suite', when: '3 nights · 12–15 Jun', amount: 2940 },
+  { label: 'Minibar', when: 'Yesterday · 21:40', amount: 48 },
+  { label: 'Acquamarina Spa', when: 'Wednesday', amount: 220 },
+];
+
+function App() {
+  const [t, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
+  const saved = useRef(loadState());
+  const TOP = ['signin', 'home', 'dining', 'spa', 'room', 'account'];
+  const initScreen = TOP.includes(saved.current.screen) ? saved.current.screen : (saved.current.authed ? 'home' : 'signin');
+
+  const [screen, setScreen] = useState(initScreen);
+  const [authed, setAuthed] = useState(!!saved.current.authed);
+  const [guest, setGuest] = useState(saved.current.guest || { room: '412', name: 'Sami Al-Rashid' });
+  const [cart, setCart] = useState(saved.current.cart || {});
+  const [room, setRoom] = useState(saved.current.room || DEFAULT_ROOM);
+  const [bookings, setBookings] = useState(saved.current.bookings || []);
+  const [loyalty] = useState(4850);
+  const [activeDish, setActiveDish] = useState('d1');
+  const [activeExp, setActiveExp] = useState('x1');
+  const [lastBooking, setLastBooking] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [scale, setScale] = useState(1);
+  const scrollRef = useRef(null);
+
+  // Persist
+  useEffect(() => {
+    localStorage.setItem(STORE_KEY, JSON.stringify({ screen, authed, guest, cart, room, bookings }));
+  }, [screen, authed, guest, cart, room, bookings]);
+
+  // Scale device to viewport
+  useEffect(() => {
+    const fit = () => {
+      const m = 32;
+      const s = Math.min((window.innerWidth - m) / 744, (window.innerHeight - m) / 1040, 1);
+      setScale(s);
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, []);
+
+  // Scroll to top on screen change
+  useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [screen]);
+
+  const go = useCallback((s) => setScreen(s), []);
+  const notify = useCallback((msg) => { setToast(msg); }, []);
+  useEffect(() => { if (!toast) return; const id = setTimeout(() => setToast(null), 2400); return () => clearTimeout(id); }, [toast]);
+
+  const addItem = (id) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }));
+  const removeItem = (id) => setCart((c) => { const n = { ...c }; if (n[id] > 1) n[id]--; else delete n[id]; return n; });
+  const clearCart = () => setCart({});
+  const openItem = (id) => { setActiveDish(id); setScreen('menu'); };
+  const openExp = (id) => { setActiveExp(id); setScreen('booking'); };
+  const addBooking = (b) => { setLastBooking(b); setBookings((bs) => [...bs, b]); };
+  const onAuth = (g) => setGuest((cur) => ({ ...cur, ...g, name: g.name && g.name.includes(' ') ? g.name : 'Sami ' + (g.name || 'Al-Rashid') }));
+  const onSignOut = () => { setAuthed(false); setScreen('signin'); };
+
+  const venue = { name: t.venueName, place: t.venuePlace };
+  const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
+
+  // Which bottom-nav tab is active for the current screen
+  const navMap = { home: 'home', dining: 'dining', menu: 'dining', cart: 'dining', orderConfirmed: 'dining',
+    spa: 'spa', booking: 'spa', bookingConfirmed: 'spa', room: 'room', account: 'account' };
+  const showNav = ['home', 'dining', 'spa', 'room', 'account'].includes(screen);
+
+  const A = window.VillaAuth, H = window.VillaHome, Dn = window.VillaDining, Sp = window.VillaSpa, Rm = window.VillaRoom, Ac = window.VillaAccount;
+
+  let content;
+  switch (screen) {
+    case 'signin': content = <A.SignIn go={go} venue={venue} onAuth={(g) => { onAuth(g); setAuthed(true); }} />; break;
+    case 'home': content = <H.Home go={go} venue={venue} guest={guest} loyalty={loyalty} nightsLeft={2} />; break;
+    case 'dining': content = <Dn.Dining go={go} cart={cart} addItem={addItem} removeItem={removeItem} openItem={openItem} />; break;
+    case 'menu': content = <Dn.MenuDetail go={go} id={activeDish} cart={cart} addItem={addItem} removeItem={removeItem} />; break;
+    case 'cart': content = <Dn.Cart go={go} cart={cart} addItem={addItem} removeItem={removeItem} guest={guest} />; break;
+    case 'orderConfirmed': content = <Dn.OrderConfirmed go={go} guest={guest} clearCart={clearCart} />; break;
+    case 'spa': content = <Sp.Spa go={go} openExp={openExp} />; break;
+    case 'booking': content = <Sp.Booking go={go} id={activeExp} addBooking={addBooking} />; break;
+    case 'bookingConfirmed': content = <Sp.BookingConfirmed go={go} lastBooking={lastBooking} />; break;
+    case 'room': content = <Rm.Room go={go} room={room} setRoom={setRoom} guest={guest} notify={notify} />; break;
+    case 'account': content = <Ac.Account go={go} guest={guest} loyalty={loyalty} bookings={bookings} folio={FOLIO} nightsLeft={2} onSignOut={onSignOut} />; break;
+    default: content = <H.Home go={go} venue={venue} guest={guest} loyalty={loyalty} nightsLeft={2} />;
+  }
+
+  const navItems = [
+    { key: 'home', icon: I.home({ size: 24 }) },
+    { key: 'dining', icon: I.dining({ size: 24 }) },
+    { key: 'spa', icon: I.spa({ size: 24 }) },
+    { key: 'room', icon: I.room({ size: 24 }) },
+    { key: 'account', icon: I.user({ size: 24 }) },
+  ];
+
+  const themeVars = {
+    '--brand': t.accent[0],
+    '--brand-strong': t.accent[1],
+    '--hotel-red': t.accent[0],
+    '--hotel-maroon': t.accent[1],
+    '--brand-soft': t.accent[0] + '24',
+    '--focus-ring': t.accent[0],
+    '--font-elegant': FONTS[t.displayFont] || FONTS.Georama,
+  };
+
+  return (
+    <React.Fragment>
+      <div className="stage">
+        <div className="device theme-hotel" style={{ transform: `scale(${scale})`, ...themeVars }}>
+          <div className="scroll" ref={scrollRef}>{content}</div>
+
+          {showNav && (
+            <div className="navwrap">
+              <window.NEOLIFEDesignSystem_08f245.BottomNav
+                variant="pill"
+                items={navItems}
+                active={navMap[screen]}
+                onChange={(k) => go(k === 'dining' && cartCount ? 'dining' : k)}
+                style={{ background: 'rgba(35,32,32,.9)', backdropFilter: 'blur(16px)', border: '1px solid var(--border-subtle)' }}
+              />
+            </div>
+          )}
+
+          {toast && (
+            <div style={{ position: 'absolute', top: 26, left: '50%', transform: 'translateX(-50%)', zIndex: 40,
+              background: 'rgba(35,32,32,.96)', backdropFilter: 'blur(12px)', color: '#F5F2EE', borderRadius: 999,
+              padding: '12px 22px', fontSize: 14, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 10,
+              border: '1px solid var(--border-subtle)', boxShadow: '0 12px 36px rgba(0,0,0,.5)', animation: 'toastIn .28s var(--ease-out)', whiteSpace: 'nowrap' }}>
+              <span style={{ color: 'var(--status-success)', display: 'inline-flex' }}>{I.check({ size: 18 })}</span>{toast}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <window.TweaksPanel title="Tweaks">
+        <window.TweakSection label="Brand" />
+        <window.TweakColor label="Accent" value={t.accent} options={ACCENTS} onChange={(v) => setTweak('accent', v)} />
+        <window.TweakSection label="Typography" />
+        <window.TweakRadio label="Display font" value={t.displayFont}
+          options={['Georama', 'Bricolage Grotesque', 'Montserrat']} onChange={(v) => setTweak('displayFont', v)} />
+        <window.TweakSection label="Venue" />
+        <window.TweakText label="Name" value={t.venueName} onChange={(v) => setTweak('venueName', v)} />
+        <window.TweakText label="Location" value={t.venuePlace} onChange={(v) => setTweak('venuePlace', v)} />
+      </window.TweaksPanel>
+    </React.Fragment>
+  );
+}
+
+const mount = () => (window.VillaAuth && window.VillaHome && window.VillaDining && window.VillaSpa && window.VillaRoom && window.VillaAccount && window.useTweaks && window.VUI)
+  ? ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+  : setTimeout(mount, 40);
+mount();
+</script>
+</body>
+</html>

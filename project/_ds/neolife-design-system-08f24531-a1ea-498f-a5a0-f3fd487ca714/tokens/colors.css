@@ -1,0 +1,139 @@
+/* ============================================================
+   NEOLIFE — Color tokens
+   Platform brand + shared neutrals + three vertical themes.
+   NEOLIFE generates a tailored guest-experience app per venue type;
+   each vertical ("theme") re-skins the same primitives.
+   ============================================================ */
+
+:root {
+  /* ---- Platform brand (NEOLIFE / Malak&Co) ---- */
+  --neo-teal:            #3B969A;  /* primary brand accent, CTAs */
+  --neo-teal-deep:       #035256;  /* gradient end / pressed */
+  --neo-teal-darkest:    #01323C;  /* deepest gradient stop */
+  --neo-ink:             #14110F;  /* near-black hero / dark surfaces */
+  --neo-gradient:        linear-gradient(100deg, #3B969A 0%, #01323C 99%); /* @kind color */
+
+  /* ---- Shared neutrals (warm) ---- */
+  --base-black:          #1E1E1E;  /* primary text on light */
+  --base-black-2:        #181818;  /* deep ink */
+  --base-grey:           #6E6161;  /* warm taupe — secondary text */
+  --base-grey-soft:      rgba(110,97,97,0.5);
+  --base-grey-line:      rgba(110,97,97,0.2);
+  --base-white:          #FFFFFF;
+  --cream:               #FFFAFA;  /* off-white card surface */
+  --warm-white:          #F0EAE2;  /* sand / sheet background */
+
+  /* ---- Semantic status ---- */
+  --status-error:        #D5373B;
+  --status-error-strong: #D50000;
+  --status-error-soft:   #FF5555;
+  --status-warning:      #E39D16;
+  --status-warning-soft: #FFBF44;
+  --status-amber:        #FFA800;
+  --status-success:      #00C590;
+
+  /* ---- Slate scale (medical + neutral UI chrome) ---- */
+  --slate-900:           #0F172A;
+  --slate-500:           #64748B;
+  --slate-400:           #9CA3AF;
+  --slate-200:           #E2E8F0;
+  --slate-100:           #F1F5F9;
+  --slate-50:            #F8FAFC;
+
+  /* ---- Elevation tints ---- */
+  --shadow-tint:         rgba(110,97,97,0.05);
+  --overlay-dark:        rgba(20,17,15,0.55);
+
+  /* ============================================================
+     SEMANTIC ALIASES — default theme = NEOLIFE platform (teal)
+     UI kits override --brand-* on a scope to re-theme.
+     ============================================================ */
+  --brand:               var(--neo-teal);
+  --brand-strong:        var(--neo-teal-deep);
+  --brand-contrast:      #FFFFFF;
+  --brand-soft:          rgba(59,150,154,0.12);
+
+  --bg-app:              #F7F7F7;
+  --surface-card:        var(--base-white);
+  --surface-raised:      var(--cream);
+
+  --text-primary:        var(--base-black);
+  --text-secondary:      var(--base-grey);
+  --text-muted:          var(--slate-400);
+  --text-on-brand:       #FFFFFF;
+
+  --border-subtle:       var(--base-grey-line);
+  --border-strong:       rgba(110,97,97,0.4);
+
+  --focus-ring:          var(--neo-teal);
+}
+
+/* ============================================================
+   THEME: Restaurants & Coffee  — "Rola" (fresh garden green)
+   ============================================================ */
+.theme-restaurant {
+  --rest-green:          #4D701F;
+  --rest-green-bright:   #77AB33;
+  --rest-mint:           #EAF5F0;
+
+  --brand:               #4D701F;
+  --brand-strong:        #3C5A18;
+  --brand-soft:          rgba(77,112,31,0.10);
+  --brand-contrast:      #FFFAFA;
+
+  --bg-app:              #EAF5F0;
+  --surface-card:        #FFFAFA;
+  --surface-raised:      #FFFFFF;
+
+  --text-primary:        #181818;
+  --text-secondary:      #6E6161;
+  --focus-ring:          #4D701F;
+}
+
+/* ============================================================
+   THEME: Clinics  — "Andalus" (trusted clinical blue)
+   ============================================================ */
+.theme-medical {
+  --med-blue:            #0369A1;
+  --med-blue-soft:       #E0F2FE;
+
+  --brand:               #0369A1;
+  --brand-strong:        #035284;
+  --brand-soft:          rgba(3,105,161,0.10);
+  --brand-contrast:      #FFFFFF;
+
+  --bg-app:              #F8FAFC;
+  --surface-card:        #FFFFFF;
+  --surface-raised:      #F1F5F9;
+
+  --text-primary:        #0F172A;
+  --text-secondary:      #64748B;
+  --text-muted:          #9CA3AF;
+  --border-subtle:       #E2E8F0;
+  --border-strong:       rgba(156,163,175,0.8);
+  --focus-ring:          #0369A1;
+}
+
+/* ============================================================
+   THEME: Hotels  — "Villa Igiea" (after-dark luxury)
+   ============================================================ */
+.theme-hotel {
+  --hotel-maroon:        #8B1A1A;
+  --hotel-red:           #D50000;
+
+  --brand:               #C0392B;
+  --brand-strong:        #8B1A1A;
+  --brand-soft:          rgba(213,0,0,0.12);
+  --brand-contrast:      #FFFFFF;
+
+  --bg-app:              #181818;
+  --surface-card:        #232020;
+  --surface-raised:      #2C2828;
+
+  --text-primary:        #F5F2EE;
+  --text-secondary:      rgba(245,242,238,0.7);
+  --text-muted:          rgba(245,242,238,0.45);
+  --border-subtle:       rgba(245,242,238,0.12);
+  --border-strong:       rgba(245,242,238,0.25);
+  --focus-ring:          #C0392B;
+}
