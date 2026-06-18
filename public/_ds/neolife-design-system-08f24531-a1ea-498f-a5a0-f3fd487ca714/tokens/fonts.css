@@ -1,0 +1,22 @@
+/* ============================================================
+   NEOLIFE — Webfonts
+   All families resolved from the Figma file, loaded from Google Fonts.
+   If you ship offline, replace these @imports with self-hosted @font-face.
+   ============================================================ */
+
+/* Inter — primary UI / body across all verticals */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+/* Darker Grotesque — restaurant section headings & menu labels */
+@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400;500;600;700;800&display=swap');
+/* Georama — hotel / display numerals & elegant headings */
+@import url('https://fonts.googleapis.com/css2?family=Georama:wght@400;500;600;700&display=swap');
+/* Montserrat — supporting marketing copy */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+/* Alexandria — NEOLIFE wordmark */
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700&display=swap');
+/* Manrope — compact labels */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+/* Geist Mono — payment / code numerals */
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap');
+/* Bricolage Grotesque — occasional expressive headings */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&display=swap');

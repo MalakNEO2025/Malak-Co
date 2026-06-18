@@ -1,0 +1,52 @@
+/* ============================================================
+   NEOLIFE — Typography tokens
+   Inter is the workhorse (UI + body). Each vertical layers a
+   character face on top: Darker Grotesque (restaurant), Georama
+   (hotel), Alexandria (NEOLIFE wordmark).
+   ============================================================ */
+
+:root {
+  /* ---- Families ---- */
+  --font-ui:       'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display:  'Darker Grotesque', 'Inter', sans-serif;   /* restaurant headings */
+  --font-elegant:  'Georama', 'Inter', sans-serif;            /* hotel / numerals */
+  --font-brand:    'Alexandria', 'Inter', sans-serif;         /* NEOLIFE wordmark */
+  --font-marketing:'Montserrat', 'Inter', sans-serif;
+  --font-compact:  'Manrope', 'Inter', sans-serif;
+  --font-mono:     'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-expressive:'Bricolage Grotesque', 'Inter', sans-serif;
+
+  /* ---- Weights ---- */
+  --fw-regular:  400; /* @kind font */
+  --fw-medium:   500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold:     700; /* @kind font */
+  --fw-extrabold:800; /* @kind font */
+  --fw-black:    900; /* @kind font */
+
+  /* ---- Type scale (px, matches Figma usage) ---- */
+  --fs-display:  48px;  /* hero / big numerals (Darker Grotesque ExtraBold) */
+  --fs-h1:       32px;
+  --fs-h2:       25px;
+  --fs-h3:       20px;  /* section titles */
+  --fs-title:    18px;
+  --fs-body-lg:  16px;
+  --fs-body:     15px;  /* default body */
+  --fs-label:    14px;
+  --fs-sm:       13px;
+  --fs-xs:       12px;  /* dense labels, descriptions */
+  --fs-2xs:      11px;
+  --fs-3xs:      10px;  /* micro labels, prices on chips */
+
+  /* ---- Line heights ---- */
+  --lh-tight:    1.0;   /* @kind font */
+  --lh-snug:     1.15;  /* @kind font */
+  --lh-normal:   1.4;   /* @kind font */
+  --lh-relaxed:  1.55;  /* @kind font */
+
+  /* ---- Letter spacing ---- */
+  --ls-tight:   -0.02em; /* @kind font */
+  --ls-normal:   0;      /* @kind font */
+  --ls-wide:     0.04em; /* @kind font */
+  --ls-caps:     0.12em; /* @kind font */
+}

@@ -1,0 +1,25 @@
+export const VData = {
+  dining: [
+    { id: 'd1', cat: 'Signature', name: 'Branzino al Sale', desc: 'Whole sea bass baked in Trapani sea salt, salmoriglio, charred lemon.', price: 64, tag: "Chef's", img: 'salt' },
+    { id: 'd2', cat: 'Signature', name: 'Tagliolini al Tartufo', desc: 'Hand-cut tagliolini, 36-month Parmigiano, autumn black truffle.', price: 52, tag: 'Seasonal', img: 'pasta' },
+    { id: 'd3', cat: 'Antipasti', name: 'Crudo di Gambero Rosso', desc: 'Mazara red prawn, Bronte pistachio, Amalfi lemon oil.', price: 38, img: 'crudo' },
+    { id: 'd4', cat: 'Antipasti', name: 'Caponata Siciliana', desc: 'Aubergine, capers, pine nuts, sweet-sour agrodolce.', price: 24, tag: 'Vegan', img: 'capon' },
+    { id: 'd5', cat: 'Primi', name: 'Risotto allo Zafferano', desc: 'Carnaroli risotto, Sicilian saffron, aged Ragusano.', price: 42, img: 'risotto' },
+    { id: 'd6', cat: 'Primi', name: 'Busiate alla Trapanese', desc: 'Twisted busiate, almond-basil pesto, datterini.', price: 36, tag: 'Vegan', img: 'busiate' },
+    { id: 'd7', cat: 'Dolci', name: 'Cassata Palermitana', desc: 'Ricotta, candied citrus, almond marzipan.', price: 18, img: 'cassata' },
+    { id: 'd8', cat: 'Dolci', name: 'Cannoli di Igiea', desc: 'Crisp shells, sheep-milk ricotta, pistachio crumb.', price: 16, tag: "Chef's", img: 'cannoli' },
+    { id: 'd9', cat: 'Cellar', name: 'Etna Rosso Riserva', desc: 'Nerello Mascalese, volcanic minerality. By the glass.', price: 28, img: 'wine' },
+    { id: 'd10', cat: 'Cellar', name: 'Franciacorta Brut', desc: 'Traditional-method sparkling, fine perlage. By the glass.', price: 26, img: 'spark' },
+  ],
+  diningCats: ['All', 'Signature', 'Antipasti', 'Primi', 'Dolci', 'Cellar'],
+  experiences: [
+    { id: 'x1', name: 'Acquamarina Spa Ritual', dur: '90 min', price: 220, cat: 'Wellness', desc: 'A Mediterranean signature journey — sea-salt scrub, warm-oil massage, hammam finish.', icon: 'spa' },
+    { id: 'x2', name: 'Sunset Sail to Mondello', dur: '3 hr', price: 480, cat: 'Adventure', desc: 'Private gozzo cruise along the Palermo coast with chilled Franciacorta.', icon: 'glass' },
+    { id: 'x3', name: 'Rooftop Yoga at Dawn', dur: '60 min', price: 0, cat: 'Wellness', desc: 'Greet the bay with a guided flow on the 14th-floor terrace. Complimentary.', icon: 'sun' },
+    { id: 'x4', name: 'Private Market & Cooking', dur: '4 hr', price: 340, cat: 'Culinary', desc: 'Shop the Ballarò market with our chef, then cook a Sicilian lunch.', icon: 'flame' },
+    { id: 'x5', name: 'Valley of the Temples', dur: 'Full day', price: 620, cat: 'Adventure', desc: "Chauffeured day to Agrigento's UNESCO Greek temples, lunch included.", icon: 'map' },
+    { id: 'x6', name: 'Botanical Garden Stroll', dur: '75 min', price: 90, cat: 'Culinary', desc: "Curated tasting walk through the villa's historic seafront gardens.", icon: 'leaf' },
+  ],
+  expCats: ['All', 'Wellness', 'Adventure', 'Culinary'],
+  times: ['07:00', '09:30', '12:00', '15:00', '18:30', '20:00'],
+};
